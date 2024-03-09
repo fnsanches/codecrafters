@@ -12,7 +12,7 @@ def main():
     conn, addr = server_socket.accept() # wait for client
     with conn:
         conn.sendall("HTTP/1.1 200 OK\r\n\r\n")
-    server_socket.close()
+    # server_socket.close()
 
 
 if __name__ == "__main__":
