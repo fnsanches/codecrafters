@@ -17,10 +17,10 @@ def main():
         if path.startswith("/echo"):
             msg = path.split("/echo/")[1]
             conn.sendall(b'HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ' + msg.Length.encode() + '\r\n\r\n' + msg.encode() + b'\r\n')
+            conn.close()
         # if path != "/":
         #     conn.sendall(b"HTTP/1.1 404 Not Found\r\n\r\n")
         # conn.sendall(b"HTTP/1.1 200 OK\r\n\r\n")
-        conn.close()
     server_socket.close()
 
 
