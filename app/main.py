@@ -12,15 +12,17 @@ def main():
     server_socket.listen(1)
     while True:
         conn, addr = server_socket.accept() # wait for client
-        data = conn.recv(1024)
-        path = data.decode().split()[1]
-        if path.startswith("/echo"):
+        data = conn.recv(1024).decode()
+        path = data.split()[1]
+        if path == "/":
+            conn.sendall(b"HTTP/1.1 200 OK\r\n\r\n")
+        elif path.startswith("/echo/"):
             msg = path.split("/echo/")[1]
-            conn.sendall(b'HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ' + msg.Length.encode() + '\r\n\r\n' + msg.encode() + b'\r\n')
-            conn.close()
-        # if path != "/":
-        #     conn.sendall(b"HTTP/1.1 404 Not Found\r\n\r\n")
-        # conn.sendall(b"HTTP/1.1 200 OK\r\n\r\n")
+            response = f"HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {len(msg)}\r\n\r\n{msg}"
+            conn.sendall(response.encode())
+        else:
+            conn.sendall(b"HTTP/1.1 404 Not Found\r\n\r\n")
+        conn.close()
     server_socket.close()
 
 
