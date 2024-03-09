@@ -13,8 +13,11 @@ def main():
     while True:
         conn, addr = server_socket.accept() # wait for client
         data = conn.recv(1024)
-        if data:
-            conn.sendall(b"HTTP/1.1 200 OK\r\n\r\n")
+        path = data.decode().split()[1]
+        if path != "/":
+            conn.sendall(b"HTTP/1.1 404 Not Found\r\n\r\n")
+            conn.close()
+        conn.sendall(b"HTTP/1.1 200 OK\r\n\r\n")
         conn.close()
     server_socket.close()
 
