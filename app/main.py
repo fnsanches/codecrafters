@@ -3,7 +3,7 @@ import socket
 import threading
 import sys
 
-def main():
+def main(dir):
     print("Logs from your program will appear here!")
     while True:
         server_socket = socket.create_server(("localhost", 4221), reuse_port=True)
