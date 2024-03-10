@@ -13,11 +13,18 @@ def main():
     while True:
         conn, addr = server_socket.accept() # wait for client
         data = conn.recv(1024).decode()
-        path = data.split()[1]
+        [method, host, user_agent] = data.split("\r\n")
+
+
+        path = method.split()[1]
         if path == "/":
             conn.sendall(b"HTTP/1.1 200 OK\r\n\r\n")
         elif path.startswith("/echo/"):
             msg = path.split("/echo/")[1]
+            response = f"HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {len(msg)}\r\n\r\n{msg}"
+            conn.sendall(response.encode())
+        elif path.startswith("/user_agent"):
+            msg = user_agent.split(": ")[1]
             response = f"HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {len(msg)}\r\n\r\n{msg}"
             conn.sendall(response.encode())
         else:
