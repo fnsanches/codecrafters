@@ -22,6 +22,16 @@ def handle_connection(server_socket, dir):
 
     if path == "/":
         conn.sendall(b"HTTP/1.1 200 OK\r\n\r\n")
+    elif method.startswith("POST"):
+        file_name = path.split("/files/")[1]
+        full_path = f"{dir}/{file_name}"
+        try:
+            with open(full_path, "w") as file:
+                file.write(data[-1])
+                response = f"HTTP/1.1 201 OK\r\n\r\n"
+                conn.sendall(response.encode())
+        except FileExistsError:
+            conn.sendall(b"HTTP/1.1 409 Conflict\r\n\r\n")
     elif path.startswith("/files/"):
         file_name = path.split("/files/")[1]
         full_path = f"{dir}/{file_name}"
