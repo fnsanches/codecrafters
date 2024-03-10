@@ -13,7 +13,7 @@ def main():
     while True:
         conn, addr = server_socket.accept() # wait for client
         data = conn.recv(1024).decode()
-        [method, host, user_agent] = data.split("\r\n")
+        method, host, user_agent = data.split("\r\n")
 
 
         path = method.split()[1]
