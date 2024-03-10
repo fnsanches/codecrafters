@@ -26,7 +26,7 @@ def handle_connection(server_socket, dir):
         file_name = path.split("/files/")[1]
         full_path = f"{dir}/{file_name}"
         try:
-            with open(full_path, "rb") as file:
+            with open(full_path, "r") as file:
                 file_content = file.read()
                 response = f"HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: {len(file_content)}\r\n\r\n{file_content}"
                 conn.sendall(response.encode())
