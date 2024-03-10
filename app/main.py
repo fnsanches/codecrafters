@@ -28,7 +28,7 @@ def handle_connection(server_socket, dir):
         try:
             with open(full_path, "rb") as file:
                 file_content = file.read()
-                response = f"HTTP/1.1 200 OK\r\nContent-Type: octet-stream\r\nContent-Length: {len(file_content)}\r\n\r\n{file_content}"
+                response = f"HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: {len(file_content)}\r\n\r\n{file_content}"
                 conn.sendall(response.encode())
         except FileNotFoundError:
             conn.sendall(b"HTTP/1.1 404 Not Found\r\n\r\n")
